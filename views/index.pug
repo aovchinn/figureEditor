@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  svg
+  each item in list
+    li: a(href='#' + item.title.toLowerCase().replace(/ /g,'-')) #{item.title}
