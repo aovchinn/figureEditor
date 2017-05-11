@@ -9,11 +9,9 @@ define([
         },
 
         initialize: function() {
-            console.log('initializing diagram');
-            console.log(this.id);
+            console.log('initializing diagram, id: ' + this.id);
             this.components = new Components();
             this.components.url = '/api/diagrams/' + this.id + '/components';
-            this.components.fetch({reset: true});
         }
     });
 

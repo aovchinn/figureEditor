@@ -1,9 +1,10 @@
 define([
-    'jquery', 'underscore', 'backbone', 'model', 'view'
-], function($, _, Backbone, Model, View) {
+    'jquery', 'underscore', 'backbone', 'view', 'router'
+], function($, _, Backbone, View, Router) {
     var initialize = function() {
-        // new Model();
-        new View();
+        // new View();
+        new Router();
+        Backbone.history.start();
     }
 
     return {initialize: initialize};

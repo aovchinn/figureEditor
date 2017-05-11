@@ -10,5 +10,5 @@ define([
     });
 
 
-    return Diagrams;
+    return new Diagrams();
 });

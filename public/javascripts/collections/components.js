@@ -14,7 +14,6 @@ define([
 
         initialize: function() {
             console.log('initializing components collection');
-            // this.add(db[1].components, {parse: true});
         },
 
         getEllipses: function () {
