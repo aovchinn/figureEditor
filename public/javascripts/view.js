@@ -1,31 +1,65 @@
 define([
-    'jquery', 'underscore', 'backbone', 'd3', 'collections/components'
-], function($, _, Backbone, d3, Components) {
+    'backbone', 'd3', 'collections/components'
+], function (Backbone, d3, Components) {
     var View = Backbone.View.extend({
         el: 'svg',
 
-        initialize: function() {
-            console.log('initializing view');
+        initialize() {
+            this.svgContainer = d3.select('svg')
+                .attr('width', 300)
+                .attr('height', 200);
+
+            this.listenTo(this.model.components, 'change', this.render);
+            this.listenTo(this.model.components, 'update', this.render);
         },
 
-        render: function() {
-            console.log('render components: ');
-            if (this.model) {
+        render() {
+            //some elements overlapping after redraw
+            //think about which elements should be closer to the viewer
+            //add depth attribute in the model ?
+            this.drawEllipses(this.model.components.getEllipses());
+            this.drawLines(this.model.components.getLines());
+        },
 
-                var svgContainer = d3.select('svg').attr('width', 300).attr('height', 200);
-                //TODO think how we can add new elements (rectangle for example)
-                // and render them without changing render
-                // for exmple grab type from model and add attributes that model has
+        drawLines(linesData) {
+            var lines = this.svgContainer
+                .selectAll('line')
+                .data(linesData);
 
-                //removing all elements from svg
-                //there should be a better way to do this
-                d3.selectAll("svg > *").remove();
+            update(lines.enter()
+                .append('line'));
 
-                svgContainer.selectAll('ellipse')
-                .data(this.model.components.getEllipses())
-                    .enter()
-                    .append('ellipse')
-                    .attr('cx', d => d.get('cx'))
+            update(lines);
+
+            lines.exit()
+                .remove();
+
+            function update(elem) {
+                elem.attr('x1', d => d.get('x1'))
+                    .attr('y1', d => d.get('y1'))
+                    .attr('x2', d => d.get('x2'))
+                    .attr('y2', d => d.get('y2'))
+                    .attr('stroke', d => d.get('stroke'))
+                    .attr('stroke-width', d => d.get('stroke-width'))
+                    .attr('stroke-dasharray', d => d.get('stroke-dasharray'));
+            }
+        },
+
+        drawEllipses(ellipsesData) {
+            var ellipses = this.svgContainer
+                .selectAll('ellipse')
+                .data(ellipsesData);
+
+            update(ellipses.enter()
+                .append('ellipse'));
+
+            update(ellipses);
+
+            ellipses.exit()
+                .remove();
+
+            function update(elem) {
+                elem.attr('cx', d => d.get('cx'))
                     .attr('cy', d => d.get('cy'))
                     .attr('rx', d => d.get('rx'))
                     .attr('ry', d => d.get('ry'))
@@ -33,17 +67,6 @@ define([
                     .attr('stroke', d => d.get('stroke'))
                     .attr('stroke-width', d => d.get('stroke-width'))
                     .attr('stroke-dasharray', d => d.get('stroke-dasharray'));
-
-                svgContainer.selectAll('line')
-                .data(this.model.components.getLines())
-                .enter().append('line')
-                .attr('x1', d => d.get('x1'))
-                .attr('y1', d => d.get('y1'))
-                .attr('x2', d => d.get('x2'))
-                .attr('y2', d => d.get('y2'))
-                .attr('stroke', d => d.get('stroke'))
-                .attr('stroke-width', d => d.get('stroke-width'))
-                .attr('stroke-dasharray', d => d.get('stroke-dasharray'));
             }
         }
     });

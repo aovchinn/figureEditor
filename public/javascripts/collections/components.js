@@ -1,8 +1,8 @@
 define([
-    'db', 'underscore', 'backbone', '../models/ellipse', '../models/line'
-], function(db, _, Backbone, Ellipse, Line) {
+    'backbone', '../models/ellipse', '../models/line'
+], function (Backbone, Ellipse, Line) {
     var Components = Backbone.Collection.extend({
-        model: function(attrs, options) {
+        model: function (attrs, options) {
             if (attrs.type === 'ellipse') {
                 return new Ellipse(attrs, options);
             } else if (attrs.type === 'line') {
@@ -12,16 +12,20 @@ define([
             }
         },
 
-        initialize: function() {
+        initialize() {
             console.log('initializing components collection');
         },
 
-        getEllipses: function () {
-            return this.where({type: 'ellipse'});
+        getEllipses() {
+            return this.where({
+                type: 'ellipse'
+            });
         },
 
-        getLines: function () {
-            return this.where({type: 'line'});
+        getLines() {
+            return this.where({
+                type: 'line'
+            });
         }
 
 

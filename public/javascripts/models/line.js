@@ -1,6 +1,6 @@
 define([
-    'jquery', 'underscore', 'backbone'
-], function($, _, Backbone) {
+    'backbone'
+], function (Backbone) {
 
     var Line = Backbone.Model.extend({
         defaults: {
@@ -14,7 +14,7 @@ define([
             'stroke-dasharray': '0'
         },
 
-        parse: function(attrs, options) {
+        parse(attrs, options) {
             console.log('parsing line');
             var strokeDashArray = '0'; // default value 'solid'
             if (attrs.properties['stroke-style'] === 'dotted') {

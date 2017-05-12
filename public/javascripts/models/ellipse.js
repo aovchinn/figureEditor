@@ -1,6 +1,6 @@
 define([
-    'jquery', 'underscore', 'backbone'
-], function($, _, Backbone) {
+    'backbone'
+], function (Backbone) {
 
     var Ellipse = Backbone.Model.extend({
         defaults: {
@@ -15,7 +15,7 @@ define([
             'stroke-dasharray': '0'
         },
 
-        parse: function(attrs, options) {
+        parse(attrs, options) {
             console.log('parsing ellipse');
             //strokeDashArray - the border of ellipse (solid, dashed or dotted)
             var strokeDashArray = '0'; // default value 'solid'
