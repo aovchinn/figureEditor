@@ -8,7 +8,8 @@ define([
         var view = new View({
             model: diagram
         });
-        diagram.components.fetch();
+        view.render();
+        diagram.fetch();
     }
 
     // This function gets exported.
@@ -23,13 +24,13 @@ define([
             });
             diagram.fetch({
                 success: function () {
+                    console.log(diagram);
                     // Add the diagram to the global collection.
                     diagrams.add(diagram);
                     bindDataToView(diagram);
                 },
                 errror: function () {
-                    console.error;
-                    ('error fetching');
+                    console.error('error fetching');
                 }
             });
         }

@@ -1,6 +1,6 @@
 define([
-    'backbone', 'd3', 'collections/components'
-], function (Backbone, d3, Components) {
+    'backbone', 'd3'
+], function (Backbone, d3) {
     var View = Backbone.View.extend({
         el: 'svg',
 
@@ -12,13 +12,18 @@ define([
             this.EllipseContainer = d3.select('.ellipses');
             this.LinesContainer = d3.select('.lines');
 
-            this.listenTo(this.model.components, 'change', this.render);
-            this.listenTo(this.model.components, 'update', this.render);
+            this.listenTo(this.model, 'change', this.render);
+            this.listenTo(this.model, 'update', this.render);
         },
 
         render() {
-            this.drawEllipses(this.model.components.getEllipses());
-            this.drawLines(this.model.components.getLines());
+            this.drawEllipses(this.model.getEllipses());
+            this.drawLines(this.model.getLines());
+
+            // read somewhere that there is a convention
+            // about returning this from render
+            // so you can do smth like view.render().$el.append(...)
+            return this;
         },
 
         drawLines(linesData) {
@@ -35,13 +40,13 @@ define([
                 .remove();
 
             function update(elem) {
-                elem.attr('x1', d => d.get('x1'))
-                    .attr('y1', d => d.get('y1'))
-                    .attr('x2', d => d.get('x2'))
-                    .attr('y2', d => d.get('y2'))
-                    .attr('stroke', d => d.get('stroke'))
-                    .attr('stroke-width', d => d.get('stroke-width'))
-                    .attr('stroke-dasharray', d => d.get('stroke-dasharray'));
+                elem.attr('x1', d => d.x1)
+                    .attr('y1', d => d.y1)
+                    .attr('x2', d => d.x2)
+                    .attr('y2', d => d.y2)
+                    .attr('stroke', d => d.stroke)
+                    .attr('stroke-width', d => d['stroke-width'])
+                    .attr('stroke-dasharray', d => d['stroke-dasharray']);
             }
         },
 
@@ -59,14 +64,14 @@ define([
                 .remove();
 
             function update(elem) {
-                elem.attr('cx', d => d.get('cx'))
-                    .attr('cy', d => d.get('cy'))
-                    .attr('rx', d => d.get('rx'))
-                    .attr('ry', d => d.get('ry'))
-                    .attr('fill', d => d.get('fill'))
-                    .attr('stroke', d => d.get('stroke'))
-                    .attr('stroke-width', d => d.get('stroke-width'))
-                    .attr('stroke-dasharray', d => d.get('stroke-dasharray'));
+                elem.attr('cx', d => d.cx)
+                    .attr('cy', d => d.cy)
+                    .attr('rx', d => d.rx)
+                    .attr('ry', d => d.ry)
+                    .attr('fill', d => d.fill)
+                    .attr('stroke', d => d.stroke)
+                    .attr('stroke-width', d => d['stroke-width'])
+                    .attr('stroke-dasharray', d => d['stroke-dasharray']);
             }
         }
     });
