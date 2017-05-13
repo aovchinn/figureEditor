@@ -1,6 +1,6 @@
 define([
-    'backbone', 'd3'
-], function (Backbone, d3) {
+    'jquery', 'backbone', 'd3'
+], function ($, Backbone, d3) {
     var View = Backbone.View.extend({
         el: 'svg',
 
@@ -17,6 +17,7 @@ define([
         },
 
         render() {
+            $('#diagram-title').text(this.model.get('title'));
             this.drawEllipses(this.model.getEllipses());
             this.drawLines(this.model.getLines());
 
