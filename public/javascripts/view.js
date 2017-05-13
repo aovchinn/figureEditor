@@ -5,24 +5,24 @@ define([
         el: 'svg',
 
         initialize() {
-            this.svgContainer = d3.select('svg')
-                .attr('width', 300)
-                .attr('height', 200);
+            d3.select('svg')
+                .attr('width', '300')
+                .attr('height', '200');
+
+            this.EllipseContainer = d3.select('.ellipses');
+            this.LinesContainer = d3.select('.lines');
 
             this.listenTo(this.model.components, 'change', this.render);
             this.listenTo(this.model.components, 'update', this.render);
         },
 
         render() {
-            //some elements overlapping after redraw
-            //think about which elements should be closer to the viewer
-            //add depth attribute in the model ?
             this.drawEllipses(this.model.components.getEllipses());
             this.drawLines(this.model.components.getLines());
         },
 
         drawLines(linesData) {
-            var lines = this.svgContainer
+            var lines = this.LinesContainer
                 .selectAll('line')
                 .data(linesData);
 
@@ -46,7 +46,7 @@ define([
         },
 
         drawEllipses(ellipsesData) {
-            var ellipses = this.svgContainer
+            var ellipses = this.EllipseContainer
                 .selectAll('ellipse')
                 .data(ellipsesData);
 

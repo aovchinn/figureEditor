@@ -11,7 +11,7 @@ define([
             'y2': '160',
             'stroke': '#000000',
             'stroke-width': '2',
-            'stroke-dasharray': '0'
+            'stroke-dasharray': '0',
         },
 
         parse(attrs, options) {

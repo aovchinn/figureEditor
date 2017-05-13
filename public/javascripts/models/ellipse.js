@@ -5,14 +5,14 @@ define([
     var Ellipse = Backbone.Model.extend({
         defaults: {
             'type': 'ellipse',
-            'cx': 0,
-            'cy': 0,
-            'rx': 0,
-            'ry': 0,
+            'cx': '0',
+            'cy': '0',
+            'rx': '0',
+            'ry': '0',
             'fill': '#BDBBB8',
             'stroke': '#0000ff',
             'stroke-width': '2',
-            'stroke-dasharray': '0'
+            'stroke-dasharray': '0',
         },
 
         parse(attrs, options) {
