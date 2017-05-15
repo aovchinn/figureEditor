@@ -13,7 +13,6 @@ define([
         },
 
         parse(response, options) {
-            console.log(response);
             var parsed = [];
             var ellipses = _.where(response.components, {
                 'type': 'ellipse'

@@ -1,15 +1,32 @@
 define([
     'collections/diagrams',
     'models/diagram',
-    'view'
-], function (diagrams, Diagram, View) {
+    'view',
+    'bluebird'
+], function (diagrams, Diagram, View, Promise) {
+
 
     var bindDataToView = function (diagram) {
         var view = new View({
             model: diagram
         });
+        //render so user can see something while we updating data
         view.render();
-        diagram.fetch();
+        // wrap fetch in resolve() to get bluebird Promise
+        // fetch returns jqXHR obj with .done .fail .always methods
+        // not sure that I need bluebird here, but
+        // for the sake of consistency in the future
+        // and tech project description suggest it
+
+        //do we need promise here? because we don't do anything with it
+        // view listens to 'update' and 'change' so we don't need to bother about it
+        Promise.resolve(diagram.fetch())
+            .then(function (res) {
+                console.log('fetch suceeded');
+            })
+            .catch(() => {
+                console.error('fetch failed');
+            });
     }
 
     // This function gets exported.
@@ -22,17 +39,14 @@ define([
             diagram = new Diagram({
                 id: diagramId
             });
-            diagram.fetch({
-                success: function () {
-                    console.log(diagram);
-                    // Add the diagram to the global collection.
+            Promise.resolve(diagram.fetch())
+                .then(function (res) {
                     diagrams.add(diagram);
                     bindDataToView(diagram);
-                },
-                errror: function () {
-                    console.error('error fetching');
-                }
-            });
+                })
+                .catch(() => {
+                    console.error('fetch failed');
+                });
         }
     }
 

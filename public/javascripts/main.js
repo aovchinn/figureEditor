@@ -14,7 +14,8 @@ require.config({
         jquery: '/source/jquery/dist/jquery.min',
         underscore: '/source/underscore/underscore-min',
         backbone: '/source/backbone/backbone-min',
-        d3: '/source/d3/build/d3.min'
+        d3: '/source/d3/build/d3.min',
+        bluebird: '/source/bluebird/js/browser/bluebird.min'
     }
 
 });
