@@ -1,7 +1,7 @@
 define([
     'backbone', 'controller'
 ], function (Backbone, viewDiagramsController) {
-    var Router = Backbone.Router.extend({
+    const Router = Backbone.Router.extend({
         routes: {
             'my-diagram-:id': 'viewDiagramsController',
         },

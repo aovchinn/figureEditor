@@ -1,7 +1,7 @@
 define([
     'underscore', 'backbone'
 ], function (_, Backbone) {
-    var Diagram = Backbone.Model.extend({
+    const Diagram = Backbone.Model.extend({
         urlRoot: '/api/diagrams/',
         defaults: {
             'title': 'diagram-name',
@@ -13,72 +13,62 @@ define([
         },
 
         parse(response, options) {
-            var parsed = [];
-            var ellipses = _.where(response.components, {
-                'type': 'ellipse'
+            const parsed = response.components.map((e) => {
+                return this._getParseFunction(e.type)
+                    .call(this, e);
             });
-            var lines = _.where(response.components, {
-                'type': 'line'
-            });
-
-            for (ellipse of ellipses) {
-                parsed.push(parseEllipse(ellipse));
-            }
-
-            for (line of lines) {
-                parsed.push(parseLine(line));
-            }
-
             return {
                 'title': response.title,
                 'components': parsed
             };
+        },
 
-            function parseEllipse(ellipse) {
-                console.log('parsing ellipse');
-                //strokeDashArray - the border of ellipse (solid, dashed or dotted)
-                var strokeDashArray = '0'; // default value 'solid'
-                if (ellipse.properties['stroke-style'] === 'dotted') {
-                    strokeDashArray = '1, 4';
-                } else if (ellipse.properties['stroke-style'] === 'dashed') {
-                    strokeDashArray = '8, 10';
-                }
+        _getParseFunction(element) {
+            const elements = {
+                'ellipse': this._parseEllipse,
+                'line': this._parseLine
+            };
+            return elements[element] || (e => e);
+        },
 
-                //moving nested properties up on one level with 'type',
-                return {
-                    'type': ellipse.type,
-                    'cx': ellipse.properties.x,
-                    'cy': ellipse.properties.y,
-                    'rx': ellipse.properties.rx,
-                    'ry': ellipse.properties.ry,
-                    'fill': ellipse.properties.fill,
-                    'stroke': ellipse.properties['stroke-color'],
-                    'stroke-width': ellipse.properties['stroke-width'],
-                    'stroke-dasharray': strokeDashArray
-                };
+        _parseEllipse(ellipse) {
+            console.log('parsing ellipse');
+            //moving nested properties up on one level with 'type',
+            return {
+                'type': ellipse.type,
+                'cx': ellipse.properties.x,
+                'cy': ellipse.properties.y,
+                'rx': ellipse.properties.rx,
+                'ry': ellipse.properties.ry,
+                'fill': ellipse.properties.fill,
+                'stroke': ellipse.properties['stroke-color'],
+                'stroke-width': ellipse.properties['stroke-width'],
+                'stroke-dasharray': this._getStrokeDashArray(ellipse.properties['stroke-style'])
+            };
+        },
+
+        _parseLine(line) {
+            console.log('parsing line');
+            //moving nested properties up on one level with 'type',
+            return {
+                'type': line.type,
+                'x1': line.properties.start.x,
+                'y1': line.properties.start.y,
+                'x2': line.properties.end.x,
+                'y2': line.properties.end.y,
+                'stroke': line.properties['stroke-color'],
+                'stroke-width': line.properties['stroke-width'],
+                'stroke-dasharray': this._getStrokeDashArray(line.properties['stroke-style'])
+            };
+        },
+
+        _getStrokeDashArray(strokeStyle) {
+            const strokes = {
+                'dashed': '8, 10',
+                'dotted': '1, 4',
+                'solid': '0'
             }
-
-            function parseLine(line) {
-                console.log('parsing line');
-                var strokeDashArray = '0'; // default value 'solid'
-                if (line.properties['stroke-style'] === 'dotted') {
-                    strokeDashArray = '1, 4';
-                } else if (line.properties['stroke-style'] === 'dashed') {
-                    strokeDashArray = '8, 10';
-                }
-
-                //moving nested properties up on one level with 'type',
-                return {
-                    'type': line.type,
-                    'x1': line.properties.start.x,
-                    'y1': line.properties.start.y,
-                    'x2': line.properties.end.x,
-                    'y2': line.properties.end.y,
-                    'stroke': line.properties['stroke-color'],
-                    'stroke-width': line.properties['stroke-width'],
-                    'stroke-dasharray': strokeDashArray
-                };
-            }
+            return strokes[strokeStyle] || '0';
         },
 
 
@@ -94,6 +84,5 @@ define([
             });
         }
     });
-
     return Diagram;
 });

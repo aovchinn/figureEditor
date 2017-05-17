@@ -6,8 +6,8 @@ define([
 ], function (diagrams, Diagram, View, Promise) {
 
 
-    var bindDataToView = function (diagram) {
-        var view = new View({
+    const bindDataToView = function (diagram) {
+        const view = new View({
             model: diagram
         });
         //render so user can see something while we updating data
@@ -30,8 +30,8 @@ define([
     }
 
     // This function gets exported.
-    var viewDiagramsController = function (diagramId) {
-        var diagram = diagrams.get(diagramId);
+    const viewDiagramsController = function (diagramId) {
+        let diagram = diagrams.get(diagramId);
         if (diagram) {
             bindDataToView(diagram);
         } else {

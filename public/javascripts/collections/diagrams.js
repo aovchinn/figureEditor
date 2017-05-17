@@ -4,7 +4,7 @@
 define([
     'backbone', '../models/diagram'
 ], function(Backbone, Diagram) {
-    var Diagrams = Backbone.Collection.extend({
+    const Diagrams = Backbone.Collection.extend({
         url: '/api/diagrams',
         model: Diagram
     });
