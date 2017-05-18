@@ -9,18 +9,20 @@ define([
                 .attr('width', '300')
                 .attr('height', '200');
 
+            // TODO keep draw order
+            // new ellements in the foreground
             this.EllipseContainer = d3.select('.ellipses');
             this.LinesContainer = d3.select('.lines');
 
-            this.listenTo(this.model, 'change', this.render);
-            this.listenTo(this.model, 'update', this.render);
+            this.listenTo(this.collection, 'sync', this.render);
+            this.listenTo(this.collection, 'update', this.render);
         },
 
         render() {
             $('#diagram-title')
-                .text(this.model.get('title'));
-            this.drawEllipses(this.model.getEllipses());
-            this.drawLines(this.model.getLines());
+                .text(this.collection.getTitle());
+            this.drawEllipses(this.collection.getEllipses());
+            this.drawLines(this.collection.getLines());
 
             // read somewhere that there is a convention
             // about returning this from render
@@ -36,13 +38,13 @@ define([
             lines.enter()
                 .append('line')
                 .merge(lines)
-                .attr('x1', d => d.x1)
-                .attr('y1', d => d.y1)
-                .attr('x2', d => d.x2)
-                .attr('y2', d => d.y2)
-                .attr('stroke', d => d.stroke)
-                .attr('stroke-width', d => d['stroke-width'])
-                .attr('stroke-dasharray', d => d['stroke-dasharray']);
+                .attr('x1', d => d.attributes.x1)
+                .attr('y1', d => d.attributes.y1)
+                .attr('x2', d => d.attributes.x2)
+                .attr('y2', d => d.attributes.y2)
+                .attr('stroke', d => d.attributes.stroke)
+                .attr('stroke-width', d => d.attributes['stroke-width'])
+                .attr('stroke-dasharray', d => d.attributes['stroke-dasharray']);
 
             lines.exit()
                 .remove();
@@ -56,14 +58,14 @@ define([
             ellipses.enter()
                 .append('ellipse')
                 .merge(ellipses)
-                .attr('cx', d => d.cx)
-                .attr('cy', d => d.cy)
-                .attr('rx', d => d.rx)
-                .attr('ry', d => d.ry)
-                .attr('fill', d => d.fill)
-                .attr('stroke', d => d.stroke)
-                .attr('stroke-width', d => d['stroke-width'])
-                .attr('stroke-dasharray', d => d['stroke-dasharray']);
+                .attr('cx', d => d.attributes.cx)
+                .attr('cy', d => d.attributes.cy)
+                .attr('rx', d => d.attributes.rx)
+                .attr('ry', d => d.attributes.ry)
+                .attr('fill', d => d.attributes.fill)
+                .attr('stroke', d => d.attributes.stroke)
+                .attr('stroke-width', d => d.attributes['stroke-width'])
+                .attr('stroke-dasharray', d => d.attributes['stroke-dasharray']);
 
             ellipses.exit()
                 .remove();
