@@ -2,7 +2,6 @@ if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-//TODO  consistency in db (numbers as strings) or not?
 define(function() {
     return [
         {

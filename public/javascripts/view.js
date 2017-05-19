@@ -1,37 +1,38 @@
 define([
-    'jquery', 'backbone', 'd3'
-], function ($, Backbone, d3) {
+    'backbone', 'd3'
+], function (Backbone, d3) {
     const View = Backbone.View.extend({
         el: 'svg',
 
         initialize() {
-            d3.select('svg')
+            this.svg = d3.select('svg')
                 .attr('width', '300')
                 .attr('height', '200');
 
-            // TODO keep draw order
-            // new ellements in the foreground
-            this.EllipseContainer = d3.select('.ellipses');
-            this.LinesContainer = d3.select('.lines');
+            //cleaning when switching to new diagram
+            this.svg.selectAll('*')
+                .remove();
 
-            this.listenTo(this.collection, 'sync', this.render);
+            this.listenTo(this.collection, 'change', this.render);
             this.listenTo(this.collection, 'update', this.render);
         },
 
         render() {
             $('#diagram-title')
                 .text(this.collection.getTitle());
+
             this.drawEllipses(this.collection.getEllipses());
             this.drawLines(this.collection.getLines());
 
-            // read somewhere that there is a convention
-            // about returning this from render
-            // so you can do smth like view.render().$el.append(...)
+            this.svg.selectAll('*').sort((a, b) => {
+                return a.cid > b.cid ? 1 : -1;
+            });
+
             return this;
         },
 
         drawLines(linesData) {
-            const lines = this.LinesContainer
+            const lines = this.svg
                 .selectAll('line')
                 .data(linesData);
 
@@ -51,7 +52,7 @@ define([
         },
 
         drawEllipses(ellipsesData) {
-            const ellipses = this.EllipseContainer
+            const ellipses = this.svg
                 .selectAll('ellipse')
                 .data(ellipsesData);
 

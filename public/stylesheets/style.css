@@ -6,3 +6,8 @@ body {
 a {
   color: #00B7FF;
 }
+
+svg>*:hover {
+    fill-opacity: .5;
+    stroke-opacity: .5;
+}

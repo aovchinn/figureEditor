@@ -5,7 +5,5 @@ block content
   p Welcome to #{title}
   h2#diagram-title
   svg
-    g.ellipses
-    g.lines
   each item in list
     li: a(href='#' + item.title.toLowerCase().replace(/ /g,'-')) #{item.title}
