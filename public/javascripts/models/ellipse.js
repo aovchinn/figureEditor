@@ -1,4 +1,4 @@
-define(['models/element'],
+define(['./element'],
     function (Element) {
         const Ellipse = Element.extend({
             parse(response, options) {
