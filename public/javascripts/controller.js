@@ -1,6 +1,6 @@
 define([
     'collections/diagram',
-    'view',
+    'views/diagram-view',
     'bluebird'
 ], function ( Diagram, View, Promise) {
     const viewDiagramsController = function (diagramId) {

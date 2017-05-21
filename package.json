@@ -5,7 +5,8 @@
   "scripts": {
     "nodemon": "node node_modules\\nodemon\\bin\\nodemon.js",
     "start": "node ./bin/www",
-    "karma": "node node_modules/karma/bin/karma start karma.conf.js"
+    "karma": "node node_modules/karma/bin/karma start karma.conf.js",
+    "test": "npm run karma"
   },
   "dependencies": {
     "amdefine": "^1.0.1",

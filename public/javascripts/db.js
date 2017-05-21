@@ -10,7 +10,7 @@ define(function() {
                 {
                     'type': 'ellipse',
                     'properties': {
-                        'x': 50,
+                        'x': 60,
                         'y': 40,
                         'rx': '50',
                         'ry': '50',
@@ -46,7 +46,7 @@ define(function() {
                             'y': '90'
                         },
                         'stroke-color': '#E91E63',
-                        'stroke-width': '2',
+                        'stroke-width': '6',
                         'stroke-style': 'dotted'
                     }
                 }, {
