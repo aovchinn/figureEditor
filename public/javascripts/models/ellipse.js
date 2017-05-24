@@ -1,6 +1,6 @@
-define(['./element'],
-    function (Element) {
-        const Ellipse = Element.extend({
+define(['./shape'],
+    function (Shape) {
+        const Ellipse = Shape.extend({
             parse(response, options) {
                 console.log('parsing ellipse');
                 return {

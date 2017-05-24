@@ -1,10 +1,12 @@
 define([
-    'backbone', '../models/ellipse', '../models/line'
-], function (Backbone, Ellipse, Line) {
+    'backbone', '../models/ellipse', '../models/line', 'underscore'
+], function (Backbone, Ellipse, Line, _) {
     const Diagram = Backbone.Collection.extend({
         url: '/api/diagrams/0',
         title: 'diagram-name',
         id: '0',
+        selectedShape: null,
+
         model: function (attrs, options) {
             const constructors = {
                 ellipse: (attrs, options) => new Ellipse(attrs, options),
@@ -20,6 +22,7 @@ define([
 
         initialize() {
             console.log('initializing diagram');
+
         },
 
         parse(response, options) {
@@ -37,14 +40,32 @@ define([
         },
 
         getEllipses() {
-            return this.where({
-                'type': 'ellipse'
-            });
+            return _.pluck(this.where({
+                type: 'ellipse'
+            }), 'attributes');
         },
 
         getLines() {
-            return this.where({
-                'type': 'line'
+            return _.pluck(this.where({
+                type: 'line'
+            }), 'attributes');
+        },
+
+        selectShape(index) {
+            const validIndex = index < this.size() && index >= 0;
+            this.selectedShape = validIndex ? index : null;
+            if (this.selectedShape !== null) {
+                this.trigger('selected');
+            }
+        },
+
+        getSelected() {
+            return this.selectedShape;
+        },
+
+        getIndexByJSON(shape){
+            return this.findLastIndex((curShape) => {
+                return _.isEqual(curShape.toJSON(), shape);
             });
         }
     });

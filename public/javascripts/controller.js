@@ -1,15 +1,18 @@
 define([
     'collections/diagram',
-    'view',
+    'views/diagram-view',
+    'views/edit-el-view',
     'bluebird'
-], function ( Diagram, View, Promise) {
+], function (Diagram, View, EditElView, Promise) {
     const viewDiagramsController = function (diagramId) {
         const diagram = new Diagram();
         diagram.setId(diagramId);
-        const view = new View({
-            'collection' : diagram
+        new View({
+            collection: diagram
         });
-
+        new EditElView({
+            collection: diagram
+        });
         Promise.resolve(diagram.fetch())
             .then(function (res) {
                 console.log('fetch succeeded');

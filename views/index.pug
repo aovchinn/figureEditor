@@ -4,6 +4,8 @@ block content
   h1= title
   p Welcome to #{title}
   h2#diagram-title
-  svg
+  #view
+    svg
+    #controls
   each item in list
     li: a(href='#' + item.title.toLowerCase().replace(/ /g,'-')) #{item.title}
