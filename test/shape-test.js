@@ -1,17 +1,16 @@
-define(['public/javascripts/models/element'], function (Element) {
+define(['public/javascripts/models/shape'], function (Shape) {
     describe('Element._getStrokeDashArray', function () {
         let elem;
         before(function () {
-            // runs before all tests in this block
-            elem = new Element();
+            elem = new Shape();
         });
 
         it('should return 0 when gets stroke that it didn\'t know', function () {
-            assert.equal(elem._getStrokeDashArray(undefined), 0, 'returned 0');
+            assert.equal(elem._getStrokeDashArray(undefined), 0);
         });
 
         it('should return "1, 4" for "dotted" stroke', function () {
-            assert.equal(elem._getStrokeDashArray('dotted'), '1, 4', 'do I need to write here anything?');
+            assert.equal(elem._getStrokeDashArray('dotted'), '1, 4');
         });
 
         it('should return "8, 10" for "dashed" stroke', function () {

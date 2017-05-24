@@ -1,6 +1,6 @@
-define(['./element'],
-    function (Element) {
-        const Line = Element.extend({
+define(['./shape'],
+    function (Shape) {
+        const Line = Shape.extend({
             parse(response, options) {
                 console.log('parsing line');
                 //moving nested properties up on one level with 'type',

@@ -1,13 +1,24 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
 }
 
-svg>*:hover {
+svg > *:hover {
     fill-opacity: .5;
     stroke-opacity: .5;
+}
+
+#view {
+    display: flex;
+    flex-direction: row;
+    min-width: 400px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
 }

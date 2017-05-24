@@ -1,15 +1,14 @@
 define([
-    'backbone', 'd3'
-], function (Backbone, d3) {
+    'backbone', 'd3', './edit-el-view'
+], function (Backbone, d3, editElView) {
+
+    const SELECTION_PADDING = 4;
+
     const View = Backbone.View.extend({
         el: 'svg',
 
-        events: {
-            // 'click ellipse': 'editEllipse',
-            // 'click line': 'editLine'
-        },
-
         initialize() {
+            console.log(this.collection);
             this.svg = d3.select('svg')
                 .attr('width', '300')
                 .attr('height', '200');
@@ -27,105 +26,78 @@ define([
             // load to http://localhost:3000/#my-diagram-2
             // then go to diagram-1
             // render order is not right
-            $('#diagram-title')
-                .text(this.collection.getTitle());
-
-            this.drawEllipses(this.collection.getEllipses());
-            this.drawLines(this.collection.getLines());
-
-            this.svg.selectAll('*')
-                .sort((a, b) => {
-                    return a.cid > b.cid ? 1 : -1;
-                });
-
+            this._renderTitle();
+            this._renderShapes();
+            this._changeRenderOrder();
             return this;
         },
 
-        drawLines(linesData) {
-            const lines = this.svg
-                .selectAll('line')
-                .data(linesData);
-
-            lines.enter()
-                .append('line')
-                .merge(lines)
-                .attr('x1', d => d.attributes.x1)
-                .attr('y1', d => d.attributes.y1)
-                .attr('x2', d => d.attributes.x2)
-                .attr('y2', d => d.attributes.y2)
-                .attr('stroke', d => d.attributes.stroke)
-                .attr('stroke-width', d => d.attributes['stroke-width'])
-                .attr('stroke-dasharray', d => d.attributes['stroke-dasharray'])
-                .on('click', d => this.editLine(d));
-
-            lines.exit()
-                .on('click', null)
-                .remove();
+        _renderTitle() {
+            $('#diagram-title')
+                .text(this.collection.getTitle());
         },
 
-        drawEllipses(ellipsesData) {
+        _renderShapes() {
+            this._drawEllipses(this.collection.getEllipses());
+            this._drawLines(this.collection.getLines());
+        },
+
+        _changeRenderOrder() {
+            this.svg.selectAll('ellipse, line')
+                .sort((a, b) => a.cid > b.cid ? 1 : -1);
+        },
+
+        _drawEllipses(ellipsesData = []) {
             const ellipses = this.svg
                 .selectAll('ellipse')
-                .data(ellipsesData);
+                    .data(ellipsesData);
 
-            ellipses.enter()
+            const appendedEllipses = ellipses.enter()
                 .append('ellipse')
-                .merge(ellipses)
-                .attr('cx', d => d.attributes.cx)
-                .attr('cy', d => d.attributes.cy)
-                .attr('rx', d => d.attributes.rx)
-                .attr('ry', d => d.attributes.ry)
-                .attr('fill', d => d.attributes.fill)
-                .attr('stroke', d => d.attributes.stroke)
-                .attr('stroke-width', d => d.attributes['stroke-width'])
-                .attr('stroke-dasharray', d => d.attributes['stroke-dasharray'])
-                .on('click', d => this.editEllipse(d));
+                    .on('click', d => this._editShape(d));
+
+            appendedEllipses.merge(ellipses)
+                .attr('cx', d => d.cx)
+                .attr('cy', d => d.cy)
+                .attr('rx', d => d.rx)
+                .attr('ry', d => d.ry)
+                .attr('fill', d => d.fill)
+                .attr('stroke', d => d.stroke)
+                .attr('stroke-width', d => d['stroke-width'])
+                .attr('stroke-dasharray', d => d['stroke-dasharray']);
 
             ellipses.exit()
                 .on('click', null)
                 .remove();
         },
 
-        editEllipse(ellipse) {
-            let x = ellipse.get('cx') - ellipse.get('rx'),
-                y = ellipse.get('cy') - ellipse.get('ry'),
-                width = 2 * ellipse.get('rx'),
-                height = 2 * ellipse.get('ry');
-
-            this.drawSelection(x, y, width, height);
+        _editShape(shape) {
+            const index = this.collection.getIndexByJSON(shape);
+            this.collection.selectShape(index);
+            console.log(index);
         },
 
-        editLine(line) {
-            // create new editView (or in controller)
-            // set corresponding el to editElView
+        _drawLines(linesData = []) {
+            const lines = this.svg
+                .selectAll('line')
+                .data(linesData);
 
-            let x = line.get('x1'),
-                y = line.get('y1'),
-                width = Math.abs(line.get('x2') - x),
-                height = Math.abs(line.get('y2') - y);
+            const appendedLines = lines.enter()
+                .append('line')
+                    .on('click', d => this._editShape(d));
 
-            this.drawSelection(x, y, width, height);
-        },
+                appendedLines.merge(lines)
+                    .attr('x1', d => d.x1)
+                    .attr('y1', d => d.y1)
+                    .attr('x2', d => d.x2)
+                    .attr('y2', d => d.y2)
+                    .attr('stroke', d => d.stroke)
+                    .attr('stroke-width', d => d['stroke-width'])
+                    .attr('stroke-dasharray', d => d['stroke-dasharray']);
 
-        drawSelection(x, y, width, height) {
-            let padding = 4;
-
-            this.svg.selectAll('rect.selection')
+            lines.exit()
+                .on('click', null)
                 .remove();
-
-            this.svg
-                .append('rect')
-                .classed('selection', true)
-                .attr('x', x - padding / 2)
-                .attr('y', y - padding / 2)
-                .attr('width', width + padding)
-                .attr('height', height + padding)
-                .attr('rx', 5)
-                .attr('stroke', 'aqua')
-                .attr('stroke-width', 2)
-                .attr('stroke-dasharray', '10, 4')
-                .attr('fill', 'aqua')
-                .attr('fill-opacity', 0.3);
         }
     });
 
