@@ -17,8 +17,3 @@ svg > *:hover {
     flex-direction: row;
     min-width: 400px;
 }
-
-form {
-    display: flex;
-    flex-direction: column;
-}

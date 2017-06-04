@@ -11,6 +11,7 @@ require.config({
         }
     },
     paths: {
+        text: '/source/text/text',
         jquery: '/source/jquery/dist/jquery.min',
         underscore: '/source/underscore/underscore-min',
         backbone: '/source/backbone/backbone-min',

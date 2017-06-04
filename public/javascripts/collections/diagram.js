@@ -40,6 +40,7 @@ define([
         },
 
         getEllipses() {
+            console.log(this);
             return _.pluck(this.where({
                 type: 'ellipse'
             }), 'attributes');

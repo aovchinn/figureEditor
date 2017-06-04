@@ -1,5 +1,5 @@
-define(['backbone', 'd3'],
-    function (Backbone, d3) {
+define(['backbone', 'd3', 'text!./templates/ellipseSettings.tpl', 'text!./templates/lineSettings.tpl'],
+    function (Backbone, d3, ellipseSettings, lineSettings) {
 
         const SELECTION_PADDING = 4;
 
@@ -19,21 +19,18 @@ define(['backbone', 'd3'],
             render() {
                 this.selectedShape = this.collection.at(this.collection.getSelected());
                 this._drawSelection(...this._getCoords(this.selectedShape.toJSON()));
-                this.$el.append(this._getControls());
+                this.$el.append(this._getTemplate());
             },
 
-            _getControls() {
-                const selectedJSON = this.selectedShape.toJSON();
-                const shapeProperties = Object.keys(_.omit(selectedJSON, 'type'))
-                    .reduce((acc, key) => {
-                        return acc += `<label for='${key}'> ${key} </label>
-                                <input id='${key}' name='${key}' value='${selectedJSON[key]}'>`;
-                    }, '');
-                return `<form>
-                            <h4>Properties (${selectedJSON.type})</h4>
-                            ${shapeProperties}
-                            <input type="submit" value="save">
-                        </form>`;
+            _getTemplate() {
+                const attr = this.selectedShape.toJSON();
+
+                const types = {
+                    ellipse: _.template(ellipseSettings, {variable: 'data'}),
+                    line: _.template(lineSettings, {variable: 'data'})
+                }
+
+                return types[attr.type] ? types[attr.type](attr) : '';
             },
 
             _getCoords(shape) {
@@ -41,16 +38,15 @@ define(['backbone', 'd3'],
                     'line': this._getLineCoords,
                     'ellipse': this._getEllipseCoords
                 }
-                console.log(types[shape.type]);
 
                 return types[shape.type] ? types[shape.type](shape) : {};
             },
 
             _getLineCoords(line) {
-                const x = line.x1;
-                const y = line.y1;
-                const width = Math.abs(line.x2 - x);
-                const height = Math.abs(line.y2 - y);
+                const x = Math.min(line.x1, line.x2);
+                const y = Math.min(line.y1, line.y2);
+                const width = Math.abs(line.x2 - line.x1);
+                const height = Math.abs(line.y2 - line.y1);
                 return [x, y, width, height];
             },
 
@@ -95,7 +91,6 @@ define(['backbone', 'd3'],
                 $.each(data, (index, input) => {
                     inputData[input.name] = input.value;
                 });
-                console.log(inputData);
                 this.selectedShape.set(inputData);
                 this._deselect();
             },

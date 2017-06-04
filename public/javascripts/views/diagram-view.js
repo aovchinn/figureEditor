@@ -2,13 +2,10 @@ define([
     'backbone', 'd3', './edit-el-view'
 ], function (Backbone, d3, editElView) {
 
-    const SELECTION_PADDING = 4;
-
     const View = Backbone.View.extend({
         el: 'svg',
 
         initialize() {
-            console.log(this.collection);
             this.svg = d3.select('svg')
                 .attr('width', '300')
                 .attr('height', '200');
@@ -26,6 +23,7 @@ define([
             // load to http://localhost:3000/#my-diagram-2
             // then go to diagram-1
             // render order is not right
+            //sort not working as cid don't come in
             this._renderTitle();
             this._renderShapes();
             this._changeRenderOrder();
@@ -44,7 +42,10 @@ define([
 
         _changeRenderOrder() {
             this.svg.selectAll('ellipse, line')
-                .sort((a, b) => a.cid > b.cid ? 1 : -1);
+                .sort((a, b) => {
+                    console.log(a, b);
+                    return a.cid > b.cid ? 1 : -1;
+                });
         },
 
         _drawEllipses(ellipsesData = []) {
@@ -74,7 +75,6 @@ define([
         _editShape(shape) {
             const index = this.collection.getIndexByJSON(shape);
             this.collection.selectShape(index);
-            console.log(index);
         },
 
         _drawLines(linesData = []) {
