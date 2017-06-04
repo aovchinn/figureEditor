@@ -6,11 +6,14 @@ you will need yarn to install dependencies
 	yarn
 
 # how to run
-	npm test
+	npm start
+or if you want to restart server automatically 
+	
+	npm run nodemon
 
 nodemon automatically restart server when you change files
 
 # how to test
-	npm run karma
+	npm test
 
-karma use Chrome for testing, configurable in karma.conf
+I'm using karma, and it uses Chrome for testing, configurable in karma.conf
