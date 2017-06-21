@@ -1,10 +1,11 @@
 define([
-     'backbone', 'router'
-], function(Backbone, Router) {
-    const initialize = function() {
+    "backbone", "router", "controller"
+], function(Backbone, Router, controller) {
+    function initialize() {
         new Router();
+        controller.initialize();
         Backbone.history.start();
-    }
+    };
 
     return { initialize };
 });

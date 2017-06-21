@@ -1,31 +1,31 @@
 // Karma configuration
 // Generated on Fri May 19 2017 22:32:36 GMT+0300 (RTZ 2 (зима))
 
-module.exports = function (config) {
+module.exports = function(config) {
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
-        basePath: './',
+        basePath: "./",
 
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['mocha', 'requirejs', 'chai'],
+        frameworks: ["mocha", "requirejs", "chai"],
 
 
         // list of files / patterns to load in the browser
         files: [
-            'test/test-main.js',
+            "test/test-main.js",
             {
-                pattern: 'public/**/*.js',
+                pattern: "public/**/*.js",
                 included: false
             },
             {
-                pattern: 'test/**/*.js',
+                pattern: "test/**/*.js",
                 included: false
             },
             {
-                pattern: 'node_modules/**/*.js',
+                pattern: "node_modules/**/*.js",
                 included: false
             }
         ],
@@ -33,8 +33,8 @@ module.exports = function (config) {
 
         // list of files to exclude
         exclude: [
-            '**/main.js',
-            'node_modules/**/*test*'
+            "**/main.js",
+            "node_modules/**/*test*"
         ],
 
 
@@ -46,7 +46,7 @@ module.exports = function (config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['mocha'],
+        reporters: ["mocha"],
 
 
         // web server port
@@ -63,37 +63,37 @@ module.exports = function (config) {
 
 
         // enable / disable watching file and executing tests whenever any file changes
-        autoWatch: true,
+        autoWatch: false,
 
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['Chrome'],
+        browsers: ["ChromeHeadless"],
 
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
-        singleRun: false,
+        singleRun: true,
 
         // Concurrency level
         // how many browser should be started simultaneous
         concurrency: Infinity
-    })
+    });
 
     var configuration = {
         // other things
 
         customLaunchers: {
             Chrome_travis_ci: {
-                base: 'Chrome',
-                flags: ['--no-sandbox']
+                base: "Chrome",
+                flags: ["--no-sandbox"]
             }
         },
     };
 
     if (process.env.TRAVIS) {
-        configuration.browsers = ['Chrome_travis_ci'];
+        configuration.browsers = ["Chrome_travis_ci"];
     }
 
     config.set(configuration);
-}
+};

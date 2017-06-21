@@ -1,15 +1,14 @@
-define([
-    'backbone', 'controller'
-], function (Backbone, viewDiagramsController) {
-    const Router = Backbone.Router.extend({
-        routes: {
-            'my-diagram-:id': 'viewDiagramsController',
-        },
+define(["backbone", "eventDispatcher"],
+ function(Backbone, eventDispatcher) {
+     const Router = Backbone.Router.extend({
+         routes: {
+             "my-diagram-:id": "showDiagram",
+         },
 
-        viewDiagramsController: function (id) {
-            viewDiagramsController(id - 1);
-        }
-    });
+         showDiagram(id) {
+             eventDispatcher.trigger("show:diagram", (id - 1));
+         }
+     });
 
-    return Router;
-});
+     return Router;
+ });
