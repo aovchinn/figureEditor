@@ -1,104 +1,46 @@
 define([
-    'backbone', 'd3', './edit-el-view'
-], function (Backbone, d3, editElView) {
-
+    "underscore",
+    "jquery",
+    "backbone",
+    "d3",
+    "views/shape-view",
+], function(_, $, Backbone, d3, ShapeView) {
     const View = Backbone.View.extend({
-        el: 'svg',
-
         initialize() {
-            this.svg = d3.select('svg')
-                .attr('width', '300')
-                .attr('height', '200');
-
-            //cleaning when switching to new diagram
-            this.svg.selectAll('*')
-                .remove();
-
-            this.listenTo(this.collection, 'change', this.render);
-            this.listenTo(this.collection, 'update', this.render);
+            this.$el.empty();
+            this.$el.prepend("<h2 class='title'></h2>");
+            this.$title = this.$(".title");
+            this.shapeViews = [];
+            this.svg = d3.select(this.el)
+                .insert("svg")
+                    .attr("width", "300")
+                    .attr("height", "200");
+            this.render();
+            this.listenTo(this.collection, "update", this.render);
         },
 
         render() {
-            // TODO bug description to not forget
-            // load to http://localhost:3000/#my-diagram-2
-            // then go to diagram-1
-            // render order is not right
-            //sort not working as cid don't come in
+            this._clear();
             this._renderTitle();
-            this._renderShapes();
-            this._changeRenderOrder();
-            return this;
+            this._createShapeViews();
+        },
+
+        _clear() {
+            this.$title.empty();
+            _.each(this.shapeViews, view => view.remove());
         },
 
         _renderTitle() {
-            $('#diagram-title')
-                .text(this.collection.getTitle());
+            this.$title.text(this.collection.getTitle());
         },
 
-        _renderShapes() {
-            this._drawEllipses(this.collection.getEllipses());
-            this._drawLines(this.collection.getLines());
+        _createShapeViews() {
+            this.shapeViews = this.collection.map(this._createShapeView.bind(this));
         },
 
-        _changeRenderOrder() {
-            this.svg.selectAll('ellipse, line')
-                .sort((a, b) => {
-                    console.log(a, b);
-                    return a.cid > b.cid ? 1 : -1;
-                });
+        _createShapeView(model) {
+            return new ShapeView({ model: model, svg: this.svg });
         },
-
-        _drawEllipses(ellipsesData = []) {
-            const ellipses = this.svg
-                .selectAll('ellipse')
-                    .data(ellipsesData);
-
-            const appendedEllipses = ellipses.enter()
-                .append('ellipse')
-                    .on('click', d => this._editShape(d));
-
-            appendedEllipses.merge(ellipses)
-                .attr('cx', d => d.cx)
-                .attr('cy', d => d.cy)
-                .attr('rx', d => d.rx)
-                .attr('ry', d => d.ry)
-                .attr('fill', d => d.fill)
-                .attr('stroke', d => d.stroke)
-                .attr('stroke-width', d => d['stroke-width'])
-                .attr('stroke-dasharray', d => d['stroke-dasharray']);
-
-            ellipses.exit()
-                .on('click', null)
-                .remove();
-        },
-
-        _editShape(shape) {
-            const index = this.collection.getIndexByJSON(shape);
-            this.collection.selectShape(index);
-        },
-
-        _drawLines(linesData = []) {
-            const lines = this.svg
-                .selectAll('line')
-                .data(linesData);
-
-            const appendedLines = lines.enter()
-                .append('line')
-                    .on('click', d => this._editShape(d));
-
-                appendedLines.merge(lines)
-                    .attr('x1', d => d.x1)
-                    .attr('y1', d => d.y1)
-                    .attr('x2', d => d.x2)
-                    .attr('y2', d => d.y2)
-                    .attr('stroke', d => d.stroke)
-                    .attr('stroke-width', d => d['stroke-width'])
-                    .attr('stroke-dasharray', d => d['stroke-dasharray']);
-
-            lines.exit()
-                .on('click', null)
-                .remove();
-        }
     });
 
     return View;

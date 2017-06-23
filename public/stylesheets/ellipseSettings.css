@@ -1,0 +1,9 @@
+.background {
+    border-top: solid 2px green;
+    border-bottom: solid 2px green;
+    padding: 5px 0px;
+}
+
+.border p{
+    margin-bottom: 5px;
+}

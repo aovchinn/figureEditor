@@ -1,19 +1,33 @@
+@import "/stylesheets/settings.css";
+@import "/stylesheets/ellipseSettings.css";
+
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 87vh;
     padding: 50px;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 14px Helvetica, Arial, sans-serif;
 }
 
 a {
-    color: #00B7FF;
+  color: #009688;
 }
 
-svg > *:hover {
-    fill-opacity: .5;
-    stroke-opacity: .5;
+svg>*:hover {
+  fill-opacity: .5;
+  stroke-opacity: .5;
 }
 
-#view {
-    display: flex;
-    flex-direction: row;
-    min-width: 400px;
+.diagram {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+.content {
+    flex: 1 0 auto;
+}
+
+.selection {
+    pointer-events: none;
 }

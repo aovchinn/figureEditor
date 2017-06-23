@@ -1,26 +1,26 @@
-if (typeof define !== 'function') {
-    var define = require('amdefine')(module);
+if (typeof define !== "function") {
+    var define = require("amdefine")(module);
 }
 
 define(function() {
     return [
         {
-            title: 'My diagram 1',
+            title: "My diagram 1",
             components: [
                 {
-                    type: 'ellipse',
+                    type: "ellipse",
                     properties: {
                         x: 60,
                         y: 40,
                         rx: 50,
                         ry: 50,
-                        fill: '#BDBBB8',
-                        'stroke-color': '#0000ff',
-                        'stroke-width': 2,
-                        'stroke-style': 'dashed'
+                        fill: "#BDBBB8",
+                        "stroke-color": "#0000ff",
+                        "stroke-width": 2,
+                        "stroke-style": "dashed"
                     }
                 }, {
-                    type: 'line',
+                    type: "line",
                     properties: {
                         start: {
                             x: 100,
@@ -30,12 +30,12 @@ define(function() {
                             x: 200,
                             y: 150
                         },
-                        'stroke-color': '#2196F3',
-                        'stroke-width': 2,
-                        'stroke-style': 'solid'
+                        "stroke-color": "#2196F3",
+                        "stroke-width": 2,
+                        "stroke-style": "solid"
                     }
                 }, {
-                    type: 'line',
+                    type: "line",
                     properties: {
                         start: {
                             x: 50,
@@ -45,41 +45,41 @@ define(function() {
                             x: 100,
                             y: 90
                         },
-                        'stroke-color': '#E91E63',
-                        'stroke-width': 6,
-                        'stroke-style': 'dotted'
+                        "stroke-color": "#E91E63",
+                        "stroke-width": 6,
+                        "stroke-style": "dotted"
                     }
                 }, {
-                    type: 'ellipse',
+                    type: "ellipse",
                     properties: {
                         x: 200,
                         y: 150,
                         rx: 30,
                         ry: 30,
-                        fill: '#ff0000',
-                        'stroke-color': '#0000ff',
-                        'stroke-width': 2,
-                        'stroke-style': 'solid'
+                        fill: "#ff0000",
+                        "stroke-color": "#0000ff",
+                        "stroke-width": 2,
+                        "stroke-style": "solid"
                     }
                 }
             ]
         }, {
-            title: 'My diagram 2',
+            title: "My diagram 2",
             components: [
                 {
-                    'type': 'ellipse',
+                    "type": "ellipse",
                     properties: {
                         x: 100,
                         y: 60,
                         rx: 70,
                         ry: 40,
-                        fill: '#BDBBff',
-                        'stroke-color': '#ff00ff',
-                        'stroke-width': 2,
-                        'stroke-style': 'dotted'
+                        fill: "#BDBBff",
+                        "stroke-color": "#ff00ff",
+                        "stroke-width": 2,
+                        "stroke-style": "dotted"
                     }
                 }, {
-                    type: 'line',
+                    type: "line",
                     properties: {
                         start: {
                             x: 0,
@@ -89,9 +89,9 @@ define(function() {
                             x: 200,
                             y: 150
                         },
-                        'stroke-color': '#218603',
-                        'stroke-width': 2,
-                        'stroke-style': 'dashed'
+                        "stroke-color": "#218603",
+                        "stroke-width": 2,
+                        "stroke-style": "dashed"
                     }
                 }
             ]
