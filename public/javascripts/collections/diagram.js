@@ -42,6 +42,10 @@ define(["backbone", "underscore", "../models/ellipse", "../models/line"],
 
          getSelected() {
              return this.selectedShape;
+         },
+
+         save() {
+             this.sync("update", this);
          }
      });
      return Diagram;

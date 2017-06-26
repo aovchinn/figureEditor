@@ -3,14 +3,17 @@ define([
     "eventDispatcher",
     "collections/diagram",
     "views/diagram-view",
-    "views/settings-view"
-], function(Backbone, eventDispatcher, Diagram, DiagramView, SettingsView) {
+    "views/settings-view",
+    "views/toolbar-view"
+], function(Backbone, eventDispatcher, Diagram,
+            DiagramView, SettingsView, ToolbarView) {
     const controller = {
         initialize() {
             eventDispatcher.on({
                 "show:diagram": this._showDiagram.bind(this),
                 "change:shapeProperties": this._changeShapeProperties.bind(this),
                 "toggle:shapeSelection": this._toggleShapeSelection.bind(this),
+                "save:diagram": this._saveDiagram.bind(this)
             });
         },
 
@@ -25,11 +28,16 @@ define([
                 .then(res => res.json())
                 .then(({ title, components }) => {
                     this.diagram = new Diagram(components, { title });
+                    console.log(this.diagram.id);
                 });
         },
 
         _createViews() {
-            new DiagramView({ collection: this.diagram, el: ".diagram" });
+            this.diagramView = new DiagramView({
+                collection: this.diagram,
+                container: ".app"
+            });
+            new ToolbarView({ svg: this.diagramView.svg.node() }); //looks hacky ?
         },
 
         _changeShapeProperties(shape, props) {
@@ -64,6 +72,10 @@ define([
         _deselectShape() {
             this.diagram.deselect();
             this.settingsView.remove();
+        },
+
+        _saveDiagram() {
+            this.diagram.save();
         },
     };
 

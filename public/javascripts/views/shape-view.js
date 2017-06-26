@@ -1,6 +1,6 @@
 define(["underscore", "backbone", "d3", "../eventDispatcher"],
   function(_, Backbone, d3, eventDispatcher) {
-      const SELECTION_PADDING = 4;
+      const SELECTION_PADDING = 6;
 
       const ellipseView = Backbone.View.extend({
           events: {
@@ -38,11 +38,11 @@ define(["underscore", "backbone", "d3", "../eventDispatcher"],
                   .attr("width", width + SELECTION_PADDING)
                   .attr("height", height + SELECTION_PADDING)
                   .attr("rx", 5)
-                  .attr("stroke", "aqua")
-                  .attr("stroke-width", 2)
-                  .attr("stroke-dasharray", "10, 4")
-                  .attr("fill", "aqua")
-                  .attr("fill-opacity", 0.3);
+                  .attr("stroke", "#00796b")
+                  .attr("stroke-dasharray", "4, 4")
+                  .attr("stroke-linecap", "round")
+                  .attr("fill", "#00796b")
+                  .attr("fill-opacity", 0.15);
           },
 
           _clearSelection() {

@@ -15,18 +15,18 @@ define([
         },
 
         initialize(options) {
-            this.createElement(options.svg.node());
+            this._createEl(options.svg.node());
             this.render();
         },
 
-        createElement(svgNode) {
-            const el = $("<div class='settings'></div>").insertAfter(svgNode);
+        _createEl(svgNode) {
+            const elHtml = "<div class='settings'></div>";
+            const el = $(elHtml).insertAfter($(svgNode).parent());
             this.setElement(el);
         },
 
         render() {
-            this.$el.empty();
-            this.$el.append(this._getTemplate());
+            this.$el.html(this._getTemplate());
         },
 
         _getTemplate() {

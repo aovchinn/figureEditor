@@ -6,20 +6,35 @@ define([
     "views/shape-view",
 ], function(_, $, Backbone, d3, ShapeView) {
     const View = Backbone.View.extend({
-        initialize() {
-            this.$el.empty();
+        initialize(options) {
+            this._createEl(options.container);
+            this._createDiagram();
+            this.render();
+            this.listenTo(this.collection, "update", this.render);
+            this.listenTo(this.collection, "sync", () => {console.log("sync");});
+            this.listenTo(this.collection, "error", () => {console.error("error");});
+        },
+
+        //_createElement is alredy declared inside Bb
+        _createEl(container) {
+            $(container).empty();
+            const elHtml = "<div class='diagram'></div>";
+            const el = $(elHtml).appendTo(container);
+            this.setElement(el);
+        },
+
+        _createDiagram() {
+            this.shapeViews = [];
             this.$el.prepend("<h2 class='title'></h2>");
             this.$title = this.$(".title");
-            this.shapeViews = [];
             this.svg = d3.select(this.el)
                 .insert("svg")
                     .attr("width", "300")
-                    .attr("height", "200");
-            this.render();
-            this.listenTo(this.collection, "update", this.render);
+                    .attr("height", "500");
         },
 
         render() {
+            console.log("update event");
             this._clear();
             this._renderTitle();
             this._createShapeViews();
@@ -32,6 +47,7 @@ define([
 
         _renderTitle() {
             this.$title.text(this.collection.getTitle());
+            $("title").text(this.collection.getTitle());
         },
 
         _createShapeViews() {
