@@ -6,11 +6,8 @@ router.get("/diagrams/:id", function(req, res, next) {
     res.json(db[req.params.id]);
 });
 
-router.put("/diagrams/:id", function(req, res, next) {
-    // res.send(db[req.params.id]);
-    console.log(req.body);
-    console.log("ok");
-    console.log(req.params.id);
+router.patch("/diagrams/:id", function(req, res, next) {
+    db[req.params.id] = req.body;
     res.json(db[req.params.id]);
 });
 

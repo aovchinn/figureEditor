@@ -10,9 +10,7 @@ define([
             this._createEl(options.container);
             this._createDiagram();
             this.render();
-            this.listenTo(this.collection, "update", this.render);
-            this.listenTo(this.collection, "sync", () => {console.log("sync");});
-            this.listenTo(this.collection, "error", () => {console.error("error");});
+            this.listenTo(this.model, "update", this.render);
         },
 
         //_createElement is alredy declared inside Bb
@@ -34,7 +32,6 @@ define([
         },
 
         render() {
-            console.log("update event");
             this._clear();
             this._renderTitle();
             this._createShapeViews();
@@ -46,12 +43,13 @@ define([
         },
 
         _renderTitle() {
-            this.$title.text(this.collection.getTitle());
-            $("title").text(this.collection.getTitle());
+            const title = this.model.get("title");
+            this.$title.text(title);
+            $("title").text(title);
         },
 
         _createShapeViews() {
-            this.shapeViews = this.collection.map(this._createShapeView.bind(this));
+            this.shapeViews = this.model.shapes.map(this._createShapeView.bind(this));
         },
 
         _createShapeView(model) {

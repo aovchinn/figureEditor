@@ -1,7 +1,7 @@
 define([
     "backbone",
     "eventDispatcher",
-    "collections/diagram",
+    "models/diagram",
     "views/diagram-view",
     "views/settings-view",
     "views/toolbar-view"
@@ -20,21 +20,19 @@ define([
         _showDiagram(id) {
             this._fetchDiagram(id)
                 .then(() => this._createViews())
-                .catch(e => console.error(e));
+                .catch(e => { throw e; });
+                //TODO: I think we don't need promise here
+                //because _createViews don't return a promise ?
         },
 
         _fetchDiagram(diagramId) {
-            return fetch(`/api/diagrams/${diagramId}`)
-                .then(res => res.json())
-                .then(({ title, components }) => {
-                    this.diagram = new Diagram(components, { title });
-                    console.log(this.diagram.id);
-                });
+            this.diagram = new Diagram({ id: diagramId });
+            return this.diagram.fetchDiagram();
         },
 
         _createViews() {
             this.diagramView = new DiagramView({
-                collection: this.diagram,
+                model: this.diagram,
                 container: ".app"
             });
             new ToolbarView({ svg: this.diagramView.svg.node() }); //looks hacky ?
@@ -54,7 +52,7 @@ define([
 
         _selectShape(shape, svg) {
             //click on different shapes one after another
-            if (this.diagram.getSelected()) {
+            if (this.diagram.get("selectedShape")) {
                 this._deselectShape();
             }
             this.diagram.selectShape(shape);
@@ -63,7 +61,7 @@ define([
 
         _showShapeSettings(svg) {
             this.settingsView = new SettingsView({
-                model: this.diagram.getSelected(),
+                model: this.diagram.get("selectedShape"),
                 svg: svg
             });
         },
@@ -75,7 +73,8 @@ define([
         },
 
         _saveDiagram() {
-            this.diagram.save();
+            this.diagram.saveDiagram();
+            this._deselectShape();
         },
     };
 

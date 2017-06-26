@@ -3,7 +3,6 @@ define(["./shape"],
         const Line = Shape.extend({
             parse(response, options) {
                 console.log("parsing line");
-                //moving nested properties up on one level with 'type',
                 return {
                     "type": response.type,
                     "x1": response.properties.start.x,
@@ -13,6 +12,25 @@ define(["./shape"],
                     "stroke": response.properties["stroke-color"],
                     "stroke-width": response.properties["stroke-width"],
                     "stroke-dasharray": this._getStrokeDashArray(response.properties["stroke-style"])
+                };
+            },
+
+            unparse() {
+                return {
+                    type: "line",
+                    properties: {
+                        start: {
+                            x: this.get("x1"),
+                            y: this.get("y1")
+                        },
+                        end: {
+                            x: this.get("x2"),
+                            y: this.get("y2")
+                        },
+                        "stroke-color": this.get("stroke"),
+                        "stroke-width": this.get("stroke-width"),
+                        "stroke-style": this._getStrokeStyle()
+                    }
                 };
             },
 
