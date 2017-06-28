@@ -1,8 +1,9 @@
 nav.toolbar {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
-    padding: 5px 10px 5px;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: rgba(0, 150, 136, 0.1);
 }
 
 nav button {
@@ -11,8 +12,8 @@ nav button {
     border-radius: 4px;
     color: white;
     background-color: #00796b;
-    width: 70px;
-    height: 30px;
+    width: 80px;
+    height: 40px;
     font-size: 1.1rem;
     box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
     transition: background-color .3s;
@@ -21,3 +22,18 @@ nav button {
 nav button:hover {
     background-color: #00564c;
 }
+
+/*nav .shapeButtons svg:hover {
+    stroke-opacity: 0.5;
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+
+nav .shapeButtons svg:active {
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+}
+
+nav .shapeButtons svg * {
+    pointer-events: none;
+}*/

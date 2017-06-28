@@ -1,6 +1,17 @@
 define(["./shape"],
     function(Shape) {
         const Line = Shape.extend({
+            defaults: {
+                "type": "line",
+                "x1": 0,
+                "y1": 20,
+                "x2": 100,
+                "y2": 20,
+                "stroke": "black",
+                "stroke-width": 2,
+                "stroke-dasharray": 0,
+            },
+
             parse(response, options) {
                 console.log("parsing line");
                 return {
@@ -11,7 +22,7 @@ define(["./shape"],
                     "y2": response.properties.end.y,
                     "stroke": response.properties["stroke-color"],
                     "stroke-width": response.properties["stroke-width"],
-                    "stroke-dasharray": this._getStrokeDashArray(response.properties["stroke-style"])
+                    "stroke-dasharray": this._getStrokeDashArray(response.properties["stroke-style"]),
                 };
             },
 
@@ -41,9 +52,35 @@ define(["./shape"],
                 const width = Math.abs(line.x2 - line.x1);
                 const height = Math.abs(line.y2 - line.y1);
                 return [x, y, width, height];
-            }
+            },
 
+            move(deltas) {
+                const { dx, dy } = deltas;
+                const { x1, y1, x2, y2 } = this.attributes;
+                this.set({
+                    x1: parseFloat(x1) + dx,
+                    y1: parseFloat(y1) + dy,
+                    x2: parseFloat(x2) + dx,
+                    y2: parseFloat(y2) + dy,
+                });
+            },
         });
-        return Line;
+
+        const toolbarAttrs = () => {
+            const width = 80;
+            const height = 40;
+            const xPadding = 10;
+            return {
+                x1: xPadding,
+                y1: height / 2,
+                x2: width - xPadding,
+                y2: height / 2,
+                stroke: "black",
+                "stroke-width": 5,
+                "stroke-linecap": "round"
+            };
+        };
+
+        return { Model: Line, toolbarAttrs: toolbarAttrs() };
     }
 );

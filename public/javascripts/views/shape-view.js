@@ -2,9 +2,9 @@ define(["underscore", "backbone", "d3", "../eventDispatcher"],
   function(_, Backbone, d3, eventDispatcher) {
       const SELECTION_PADDING = 6;
 
-      const ellipseView = Backbone.View.extend({
+      const shapeView = Backbone.View.extend({
           events: {
-              "click": "_toggleSelect"
+              "click": "_toggleSelect",
           },
 
           initialize(options) {
@@ -16,8 +16,9 @@ define(["underscore", "backbone", "d3", "../eventDispatcher"],
           },
 
           render() {
-              const attributes = _.omit(this.model.toJSON(), "type");
+              const attributes = _.omit(this.model.toJSON(), "type", "selected");
               _.each(attributes, (value, key) => this.shape.attr(key, value));
+              this.shape.call(d3.drag().on("drag", () => this._dragged()));
               if (this.model.get("selected")) {
                   this._drawSelection(...this.model.getSelectionCoords());
               } else {
@@ -25,7 +26,14 @@ define(["underscore", "backbone", "d3", "../eventDispatcher"],
               }
           },
 
-          _toggleSelect: function(e) {
+          _dragged() {
+              eventDispatcher.trigger("move:shape", this.model, {
+                  "dx": d3.event.dx,
+                  "dy": d3.event.dy,
+              });
+          },
+
+          _toggleSelect(e) {
               eventDispatcher.trigger("toggle:shapeSelection", this.model, this.svg);
           },
 
@@ -52,5 +60,5 @@ define(["underscore", "backbone", "d3", "../eventDispatcher"],
           },
       });
 
-      return ellipseView;
+      return shapeView;
   });

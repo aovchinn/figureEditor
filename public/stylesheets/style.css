@@ -23,7 +23,8 @@ svg>*:hover {
 .app {
   display: flex;
   flex-direction: row;
-  min-width: 300px;
+  min-width: 450px;
+  justify-content: center;
 }
 
 .content {
@@ -31,9 +32,17 @@ svg>*:hover {
     padding: 0px 50px;
 }
 
+.diagram {
+    min-width: 300px;
+}
+
+.diagram svg {
+    border: 1px solid #00796b;
+    border-radius: 3px;
+}
+
 .selection {
     pointer-events: none;
-    stroke-linecap: rou;
 }
 
 footer {

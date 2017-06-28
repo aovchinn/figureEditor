@@ -1,7 +1,7 @@
   .settings {
-      padding-top: 58px;
-      padding-left: 10px;
       min-width: 204px;
+      align-self: center;
+      padding: 25px;
   }
 
   .settings form {

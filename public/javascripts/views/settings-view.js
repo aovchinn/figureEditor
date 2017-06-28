@@ -17,6 +17,7 @@ define([
         initialize(options) {
             this._createEl(options.svg.node());
             this.render();
+            this.listenTo(this.model, "change", this.render);
         },
 
         _createEl(svgNode) {

@@ -10,9 +10,14 @@ define([
     const controller = {
         initialize() {
             eventDispatcher.on({
+                //router.js
                 "show:diagram": this._showDiagram.bind(this),
+                //settings-view.js
                 "change:shapeProperties": this._changeShapeProperties.bind(this),
+                //shape-view.js
+                "move:shape": this._moveShape.bind(this),
                 "toggle:shapeSelection": this._toggleShapeSelection.bind(this),
+                //toolbar-view.js
                 "save:diagram": this._saveDiagram.bind(this)
             });
         },
@@ -31,15 +36,22 @@ define([
         },
 
         _createViews() {
-            this.diagramView = new DiagramView({
+            new DiagramView({
                 model: this.diagram,
                 container: ".app"
             });
-            new ToolbarView({ svg: this.diagramView.svg.node() }); //looks hacky ?
+            new ToolbarView({
+                collection: this.diagram.shapes,
+                insertAfter: "header"
+            });
         },
 
         _changeShapeProperties(shape, props) {
             this.diagram.changeShapeProperties(shape, props);
+        },
+
+        _moveShape(shape, deltas) {
+            shape.move(deltas);
         },
 
         _toggleShapeSelection(shape, svg) {
@@ -66,10 +78,11 @@ define([
             });
         },
 
-
         _deselectShape() {
             this.diagram.deselect();
-            this.settingsView.remove();
+            if (this.settingsView) {
+                this.settingsView.remove();
+            }
         },
 
         _saveDiagram() {

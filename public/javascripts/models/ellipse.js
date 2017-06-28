@@ -1,6 +1,18 @@
 define(["./shape"],
     function(Shape) {
         const Ellipse = Shape.extend({
+            defaults: {
+                "type": "line",
+                "cx": 50,
+                "cy": 50,
+                "rx": 30,
+                "ry": 40,
+                "fill": "cyan",
+                "stroke": "black",
+                "stroke-width": 2,
+                "stroke-dasharray": 0,
+            },
+
             parse(response, options) {
                 console.log("parsing ellipse");
                 return {
@@ -39,8 +51,34 @@ define(["./shape"],
                 const width = 2 * ellipse.rx;
                 const height = 2 * ellipse.ry;
                 return [x, y, width, height];
-            }
+            },
+
+            move(deltas) {
+                const { dx, dy } = deltas;
+                const { cx, cy } = this.attributes;
+                this.set({
+                    "cx": parseFloat(cx) + dx,
+                    "cy": parseFloat(cy) + dy
+                });
+            },
         });
-        return Ellipse;
+
+        const toolbarAttrs = () => {
+            const width = 80;
+            const height = 40;
+            const xPadding = 10;
+            const yPadding = 5;
+            return {
+                cx: width / 2,
+                cy: height / 2,
+                rx: width / 2 - xPadding,
+                ry: height / 2 - yPadding,
+                fill: "none",
+                stroke: "black",
+                "stroke-width": 3,
+            };
+        };
+
+        return { Model: Ellipse, toolbarAttrs: toolbarAttrs() };
     }
 );

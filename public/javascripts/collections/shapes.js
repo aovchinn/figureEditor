@@ -3,8 +3,8 @@ function(Backbone, _, Ellipse, Line) {
     const Diagram = Backbone.Collection.extend({
         model: function(attrs, options) {
             const Model = {
-                ellipse: Ellipse,
-                line: Line
+                ellipse: Ellipse.Model,
+                line: Line.Model
             };
             if (Model[attrs.type]) {
                 return new Model[attrs.type](attrs, { parse: true });
@@ -19,6 +19,13 @@ function(Backbone, _, Ellipse, Line) {
 
         unparse() {
             return this.map(el => el.unparse());
+        },
+
+        getToolbarShapes() {
+            return {
+                ellipse: Ellipse.toolbarAttrs,
+                line: Line.toolbarAttrs,
+            };
         }
     });
     return Diagram;

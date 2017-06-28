@@ -34,6 +34,7 @@ define(["backbone", "bluebird", "../collections/shapes"],
             },
 
             changeShapeProperties(shape, props) {
+                //maybe we need some kind of validation
                 shape.set(props);
             },
 
@@ -43,11 +44,11 @@ define(["backbone", "bluebird", "../collections/shapes"],
             },
 
             deselect() {
-                //TODO: ??? if this.selectedShape !== null
-                this.get("selectedShape").set("selected", false);
-                this.set("selectedShape", null);
+                if (this.get("selectedShape")) {
+                    this.get("selectedShape").set("selected", false);
+                    this.set("selectedShape", null);
+                }
             },
-
         });
 
         return Diagram;
