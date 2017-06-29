@@ -2,20 +2,19 @@ define(["backbone", "bluebird", "../collections/shapes"],
     function(Backbone, Promise, Shapes) {
         const Diagram = Backbone.Model.extend({
             id: null,
-            urlRoot: "/api/diagrams/", //TODO: rejection unhandled with incorrect url
+            urlRoot: "/api/diagrams/",
             defaults: {
                 initialShapes: [],
                 selectedShape: null,
             },
 
             fetchDiagram() {
-                return Promise.resolve(this.fetch()).then(() => {
+                return Promise.resolve(this.fetch())
+                .then(() => {
                     this.shapes = new Shapes(this.get("initialShapes"), {
-                        url: this.url()
+                        url: this.url(),
+                        parseModel: true,
                     });
-                }).catch(e => {
-                    console.log(e);
-                    throw e;
                 });
             },
 

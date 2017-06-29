@@ -7,7 +7,7 @@ function(Backbone, _, Ellipse, Line) {
                 line: Line.Model
             };
             if (Model[attrs.type]) {
-                return new Model[attrs.type](attrs, { parse: true });
+                return new Model[attrs.type](attrs, { parse: options.parseModel });
             } else {
                 throw new Error(`can't create model of type: ${attrs.type}`);
             }

@@ -15,10 +15,12 @@ a {
   text-decoration: none;
 }
 
-svg>*:hover {
+diagram svg>*:hover {
   fill-opacity: .5;
   stroke-opacity: .5;
 }
+
+
 
 .app {
   display: flex;
@@ -41,7 +43,7 @@ svg>*:hover {
     border-radius: 3px;
 }
 
-.selection {
+.pointer-events-none {
     pointer-events: none;
 }
 

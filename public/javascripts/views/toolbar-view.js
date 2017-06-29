@@ -39,10 +39,13 @@ define([
             const buttonsContainer = this.$(".shapeButtons")[0];
             _.each(toolbarShapes, (attributes, shapeType) => {
                 const svgButton = d3.select(buttonsContainer)
+                    .insert("button")
                     .insert("svg")
                         .attr("width", "80")
                         .attr("height", "40");
-
+                $(svgButton.node()).on("mousedown", e => {
+                    eventDispatcher.trigger("dragstart:mousedown", shapeType, e);
+                });
                 const toolbarShape = svgButton.append(shapeType);
                 _.each(attributes, (value, key) => toolbarShape.attr(key, value));
             });

@@ -10,7 +10,8 @@ define([
             this._createEl(options.container);
             this._createDiagram();
             this.render();
-            this.listenTo(this.model, "update", this.render);
+            this.listenTo(this.model, "change:title", this.render);
+            this.listenTo(this.model.shapes, "update", this.render);
         },
 
         //_createElement is alredy declared inside Bb
