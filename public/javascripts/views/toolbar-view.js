@@ -10,14 +10,22 @@ define([
         template: _.template(toolbarTemplate),
         events:  {
             "click button[name='saveDiagramButton']": "_saveDiagram",
+            "click button[name='editButton']": "_toogleMode",
+            "click button[name='cancelChangesButton']": "_cancelChanges",
         },
 
         _saveDiagram() {
-            console.log("saving diagram");
             eventDispatcher.trigger("save:diagram");
+            this._toogleMode();
+        },
+
+        _toogleMode() {
+            $(this.svg).toggleClass("pointer-events-none");
+            $("button[name='editButton'], .shapeButtons, .undoRedo, .rightButtons").toggle();
         },
 
         initialize(options) {
+            this.svg = options.svg.node();
             this._createEl(options.insertAfter);
             this.render();
         },
@@ -32,6 +40,8 @@ define([
         render() {
             this.$el.html(this.template);
             this._addShapeButtons();
+            $(".shapeButtons, .undoRedo, .rightButtons").hide();
+            $(this.svg).addClass("pointer-events-none");
         },
 
         _addShapeButtons() {
@@ -49,6 +59,11 @@ define([
                 const toolbarShape = svgButton.append(shapeType);
                 _.each(attributes, (value, key) => toolbarShape.attr(key, value));
             });
+        },
+
+        _cancelChanges() {
+            eventDispatcher.trigger("cancel:changes");
+            this._toogleMode();
         },
     });
 

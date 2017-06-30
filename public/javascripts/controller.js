@@ -21,6 +21,7 @@ define([
                 //toolbar-view.js
                 "save:diagram": this._saveDiagram.bind(this),
                 "dragstart:mousedown": this._dragstart.bind(this),
+                "cancel:changes": this._cancelChanges.bind(this),
             });
         },
 
@@ -45,6 +46,7 @@ define([
             new ToolbarView({
                 collection: this.diagram.shapes,
                 insertAfter: "header",
+                svg: this.DiagramView.svg
             });
         },
 
@@ -152,6 +154,10 @@ define([
             $(document).off("mousemove");
             $(document).off("mouseup");
         },
+
+        _cancelChanges() {
+            this.diagram.cancelChanges();
+        }
     };
 
     return controller;

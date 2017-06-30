@@ -48,6 +48,10 @@ define(["backbone", "bluebird", "../collections/shapes"],
                     this.set("selectedShape", null);
                 }
             },
+
+            cancelChanges() {
+                this.shapes.set(this.get("initialShapes"), { parseModel: true });
+            },
         });
 
         return Diagram;
