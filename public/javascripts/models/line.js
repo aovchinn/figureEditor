@@ -66,21 +66,6 @@ define(["./shape"],
             },
         });
 
-        const toolbarAttrs = () => {
-            const width = 80;
-            const height = 40;
-            const xPadding = 10;
-            return {
-                x1: xPadding,
-                y1: height / 2,
-                x2: width - xPadding,
-                y2: height / 2,
-                stroke: "#ffffff",
-                "stroke-width": 5,
-                "stroke-linecap": "round"
-            };
-        };
-
-        return { Model: Line, toolbarAttrs: toolbarAttrs() };
+        return { Model: Line };
     }
 );

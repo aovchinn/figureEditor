@@ -12,22 +12,20 @@ define([
             "click button[name='saveDiagramButton']": "_saveDiagram",
             "click button[name='editButton']": "_toogleMode",
             "click button[name='cancelChangesButton']": "_cancelChanges",
-        },
-
-        _saveDiagram() {
-            eventDispatcher.trigger("save:diagram");
-            this._toogleMode();
-        },
-
-        _toogleMode() {
-            $(this.svg).toggleClass("pointer-events-none");
-            $("button[name='editButton'], .shapeButtons, .undoRedo, .rightButtons").toggle();
+            "click button[name='undoButton']": "_undo",
+            "click button[name='redoButton']": "_redo",
         },
 
         initialize(options) {
-            this.svg = options.svg.node();
+            this._svg = options.svg.node();
+            this._state = this.model.stateManager;
             this._createEl(options.insertAfter);
-            this.render();
+            this.$el.html(this.template);
+            this._addShapeButtons();
+            this._renderUndoRedo();
+            $(".shapeButtons, .undoRedo, .rightButtons").hide();
+            $(this._svg).addClass("pointer-events-none");
+            this.listenTo(this._state, "change", this._renderUndoRedo);
         },
 
         _createEl(insertAfter) {
@@ -37,33 +35,89 @@ define([
             this.setElement(el);
         },
 
-        render() {
-            this.$el.html(this.template);
-            this._addShapeButtons();
-            $(".shapeButtons, .undoRedo, .rightButtons").hide();
-            $(this.svg).addClass("pointer-events-none");
+        _addShapeButtons() {
+            const container = this.$(".shapeButtons")[0];
+            _.each(this._getToolbarShapes(), (attributes, type) => {
+                const svgButton = this._createSvgButton(container);
+                $(svgButton.node()).on("mousedown", e => this._dragstart(type, e));
+                const buttonShape = svgButton.append(type);
+                _.each(attributes, (value, key) => buttonShape.attr(key, value));
+            });
         },
 
-        _addShapeButtons() {
-            const toolbarShapes = this.collection.getToolbarShapes();
-            const buttonsContainer = this.$(".shapeButtons")[0];
-            _.each(toolbarShapes, (attributes, shapeType) => {
-                const svgButton = d3.select(buttonsContainer)
-                    .insert("button")
-                    .insert("svg")
-                        .attr("width", "80")
-                        .attr("height", "40");
-                $(svgButton.node()).on("mousedown", e => {
-                    eventDispatcher.trigger("dragstart:mousedown", shapeType, e);
-                });
-                const toolbarShape = svgButton.append(shapeType);
-                _.each(attributes, (value, key) => toolbarShape.attr(key, value));
-            });
+        _getToolbarShapes() {
+            return {
+                ellipse: {
+                    cx: 40,
+                    cy: 20,
+                    rx: 24,
+                    ry: 12,
+                    fill: "none",
+                    stroke: "#ffffff",
+                    "stroke-width": 3,
+                },
+                line: {
+                    x1: 16,
+                    y1: 20,
+                    x2: 64,
+                    y2: 20,
+                    stroke: "#ffffff",
+                    "stroke-width": 3,
+                    "stroke-linecap": "round"
+                },
+            };
+        },
+
+        _createSvgButton(container) {
+            return d3.select(container)
+                .insert("button")
+                .insert("svg")
+                    .attr("width", "80")
+                    .attr("height", "40");
+        },
+
+        _dragstart(shapeType, e) {
+            eventDispatcher.trigger("dragstart:mousedown", shapeType, e);
+        },
+
+        _renderUndoRedo() {
+            const index = this._state.get("index");
+            const length = this._state.getLength();
+            const isStart = index === 0;
+            const isEnd = index === length - 1;
+            this._toggleElement(this.$("button[name='undoButton']"), isStart);
+            this._toggleElement(this.$("button[name='redoButton']"), isEnd);
+        },
+
+        _toggleElement(element, state) {
+            if (state) {
+                element.attr("disabled", "disabled");
+            } else {
+                element.removeAttr("disabled");
+            }
+        },
+
+        _saveDiagram() {
+            eventDispatcher.trigger("save:diagram");
+            this._toogleMode();
+        },
+
+        _toogleMode() {
+            $(this._svg).toggleClass("pointer-events-none");
+            this.$("button[name='editButton'], .shapeButtons, .undoRedo, .rightButtons").toggle();
         },
 
         _cancelChanges() {
             eventDispatcher.trigger("cancel:changes");
             this._toogleMode();
+        },
+
+        _undo() {
+            eventDispatcher.trigger("undo:state");
+        },
+
+        _redo() {
+            eventDispatcher.trigger("redo:state");
         },
     });
 

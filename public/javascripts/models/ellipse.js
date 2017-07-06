@@ -63,22 +63,6 @@ define(["./shape"],
             },
         });
 
-        const toolbarAttrs = () => {
-            const width = 80;
-            const height = 40;
-            const xPadding = 10;
-            const yPadding = 5;
-            return {
-                cx: width / 2,
-                cy: height / 2,
-                rx: width / 2 - xPadding,
-                ry: height / 2 - yPadding,
-                fill: "none",
-                stroke: "#ffffff",
-                "stroke-width": 3,
-            };
-        };
-
-        return { Model: Ellipse, toolbarAttrs: toolbarAttrs() };
+        return { Model: Ellipse };
     }
 );

@@ -12,6 +12,7 @@ define([
             this.render();
             this.listenTo(this.model, "change:title", this.render);
             this.listenTo(this.model.shapes, "update", this.render);
+            this.listenTo(this.model.shapes, "reset", this.render);
         },
 
         //_createElement is alredy declared inside Bb
@@ -40,7 +41,7 @@ define([
 
         _clear() {
             this.$title.empty();
-            _.each(this.shapeViews, view => view.remove());
+            _.each(this.shapeViews, view => view.fullRemove());
         },
 
         _renderTitle() {

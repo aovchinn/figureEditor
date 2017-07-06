@@ -20,13 +20,6 @@ function(Backbone, _, Ellipse, Line) {
         unparse() {
             return this.map(el => el.unparse());
         },
-
-        getToolbarShapes() {
-            return {
-                ellipse: Ellipse.toolbarAttrs,
-                line: Line.toolbarAttrs,
-            };
-        }
     });
     return Diagram;
 });

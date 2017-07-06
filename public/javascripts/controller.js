@@ -15,13 +15,17 @@ define([
                 "show:diagram": this._showDiagram.bind(this),
                 //settings-view.js
                 "change:shapeProperties": this._changeShapeProperties.bind(this),
+                "save:state": this._saveState.bind(this),
                 //shape-view.js
                 "move:shape": this._moveShape.bind(this),
+                "moveend:shape": this._saveState.bind(this),
                 "toggle:shapeSelection": this._toggleShapeSelection.bind(this),
                 //toolbar-view.js
                 "save:diagram": this._saveDiagram.bind(this),
                 "dragstart:mousedown": this._dragstart.bind(this),
                 "cancel:changes": this._cancelChanges.bind(this),
+                "undo:state": this._undoState.bind(this),
+                "redo:state": this._redoState.bind(this),
             });
         },
 
@@ -44,9 +48,13 @@ define([
                 container: ".app",
             });
             new ToolbarView({
-                collection: this.diagram.shapes,
+                model: this.diagram,
                 insertAfter: "header",
                 svg: this.DiagramView.svg
+            });
+            new SettingsView({
+                model: this.diagram,
+                svg: this.DiagramView.svg,
             });
         },
 
@@ -56,6 +64,10 @@ define([
 
         _moveShape(shape, deltas) {
             shape.move(deltas);
+        },
+
+        _saveState() {
+            this.diagram.saveState();
         },
 
         _toggleShapeSelection(shape, svg) {
@@ -72,21 +84,10 @@ define([
                 this._deselectShape();
             }
             this.diagram.selectShape(shape);
-            this._showShapeSettings(svg);
-        },
-
-        _showShapeSettings(svg) {
-            this.settingsView = new SettingsView({
-                model: this.diagram.get("selectedShape"),
-                svg: svg,
-            });
         },
 
         _deselectShape() {
             this.diagram.deselect();
-            if (this.settingsView) {
-                this.settingsView.remove();
-            }
         },
 
         _saveDiagram() {
@@ -147,6 +148,8 @@ define([
             collection.each(shape => shape.set("class", ""));
             if (e.target !== dropTarget) {
                 collection.remove(newShape);
+            } else {
+                this._saveState();
             }
         },
 
@@ -157,6 +160,14 @@ define([
 
         _cancelChanges() {
             this.diagram.cancelChanges();
+        },
+
+        _undoState() {
+            this.diagram.undoState();
+        },
+
+        _redoState() {
+            this.diagram.redoState();
         }
     };
 

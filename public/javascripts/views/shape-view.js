@@ -20,12 +20,14 @@ define([
         },
 
         render() {
-            // console.log("rendering shape", this.model.toJSON());
             const attributes = _.omit(this.model.toJSON(), "type", "selected");
             // unset attr in shape model
             // don't cause dissapear of that attr in the shape attrs
             _.each(attributes, (value, key) => this.shape.attr(key, value));
-            this.shape.call(d3.drag().on("drag", () => this._dragged()));
+            this.shape.call(d3.drag()
+                .on("drag", () => this._dragged())
+                .on("end", () => this._dragend())
+            );
             if (this.model.get("selected")) {
                 this._drawSelection(...this.model.getSelectionCoords());
             } else {
@@ -34,10 +36,18 @@ define([
         },
 
         _dragged() {
+            this._wasDragging = true;
             eventDispatcher.trigger("move:shape", this.model, {
                 "dx": d3.event.dx,
                 "dy": d3.event.dy,
             });
+        },
+
+        _dragend() {
+            if (this._wasDragging) {
+                this._wasDragging = false;
+                eventDispatcher.trigger("moveend:shape");
+            }
         },
 
         _toggleSelect(e) {
@@ -64,6 +74,11 @@ define([
             if (this.selection) {
                 this.selection.remove();
             }
+        },
+
+        fullRemove() {
+            this._clearSelection();
+            this.remove();
         },
     });
 
