@@ -57,8 +57,8 @@ define(["./shape"],
                 const { dx, dy } = deltas;
                 const { cx, cy } = this.attributes;
                 this.set({
-                    "cx": parseFloat(cx) + dx,
-                    "cy": parseFloat(cy) + dy
+                    "cx": parseInt(cx) + dx,
+                    "cy": parseInt(cy) + dy
                 });
             },
         });

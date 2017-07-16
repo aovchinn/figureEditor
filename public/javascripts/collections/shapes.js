@@ -1,10 +1,17 @@
-define(["backbone", "underscore", "../models/ellipse", "../models/line"],
-function(Backbone, _, Ellipse, Line) {
+define([
+    "backbone",
+    "underscore",
+    "../models/ellipse",
+    "../models/line",
+    "../models/rect"
+],
+function(Backbone, _, Ellipse, Line, Rect) {
     const Diagram = Backbone.Collection.extend({
         model: function(attrs, options) {
             const Model = {
                 ellipse: Ellipse.Model,
-                line: Line.Model
+                line: Line.Model,
+                rect: Rect.Model
             };
             if (Model[attrs.type]) {
                 return new Model[attrs.type](attrs, { parse: options.parseModel });

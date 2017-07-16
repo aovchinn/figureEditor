@@ -5,9 +5,10 @@ define([
     "d3",
     "../eventDispatcher",
     "text!./templates/ellipseSettings.html",
-    "text!./templates/lineSettings.html"
+    "text!./templates/lineSettings.html",
+    "text!./templates/rectSettings.html"
 ], function($, _, Backbone, d3, eventDispatcher,
-    ellipseSettings, lineSettings) {
+    ellipseSettings, lineSettings, rectSettings) {
 
     const settingsView = Backbone.View.extend({
         events: {
@@ -46,6 +47,7 @@ define([
             const types = {
                 ellipse: this._renderEllipseSettings.bind(this),
                 line: this._renderLineSettings.bind(this),
+                rect: this._renderRectSettings.bind(this),
             };
             const renderMethod = types[this.selectedShape.get("type")];
             if (renderMethod) {
@@ -77,6 +79,12 @@ define([
             }
         },
 
+        _renderRectSettings() {
+            if (this.selectedShape.get("selected")) {
+                this.$("input#x").val(this.selectedShape.get("x"));
+                this.$("input#y").val(this.selectedShape.get("y"));
+            }
+        },
 
         _getTemplate() {
             const attr = _.assign(this.model.get("selectedShape").toJSON(), {
@@ -89,7 +97,8 @@ define([
 
             const types = {
                 ellipse: _.template(ellipseSettings, { variable: "data" }),
-                line: _.template(lineSettings, { variable: "data" })
+                line: _.template(lineSettings, { variable: "data" }),
+                rect: _.template(rectSettings, { variable: "data" }),
             };
 
             return types[attr.type] ? types[attr.type](attr) : "";

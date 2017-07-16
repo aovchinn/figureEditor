@@ -65,6 +65,16 @@ define([
                     "stroke-width": 3,
                     "stroke-linecap": "round"
                 },
+                rect: {
+                    x: 16,
+                    y: 8,
+                    width: 48,
+                    height: 24,
+                    fill: "none",
+                    stroke: "#ffffff",
+                    "stroke-width": 3,
+                    rx: 3
+                }
             };
         },
 
