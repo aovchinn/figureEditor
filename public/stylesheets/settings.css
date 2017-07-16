@@ -1,11 +1,20 @@
+  .settings {
+      min-width: 204px;
+      align-self: center;
+      padding: 25px;
+  }
+
   .settings form {
     display: flex;
     flex-direction: column;
     max-width: 200px;
+    border: 1px #00796b solid;
+    border-radius: 2px;
+    padding: 10px;
   }
 
   .heading {
-    border-bottom: solid 2px green;
+    border-bottom: solid 2px #00796b;
     padding-bottom: 5px;
   }
 
@@ -48,5 +57,5 @@
   }
 
   input[type="number"] {
-      text-indent: 15px;
+      text-indent: 11px;
   }

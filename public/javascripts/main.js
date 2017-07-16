@@ -8,7 +8,7 @@ require.config({
                 "underscore", "jquery"
             ],
             exports: "Backbone"
-        }
+        },
     },
     paths: {
         text: "/source/text/text",

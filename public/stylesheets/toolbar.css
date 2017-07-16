@@ -1,0 +1,85 @@
+nav.toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: rgba(0, 121, 107, 0.2);
+}
+
+nav .leftButtons {
+    display: flex;
+    flex-direction: row;
+}
+
+nav .shapeButtons {
+    display: flex;
+}
+
+nav .rightButtons {
+    display: flex;
+    margin: -10px -10px -10px 10px;
+    padding: 10px;
+    background-color: rgba(0, 121, 107, 0.05);
+    border-left: rgba(0, 121, 107, 0.1) solid 3px;
+}
+
+nav .undoRedo {
+    display: flex;
+    margin: -10px 10px -10px -10px;
+    padding: 10px;
+    background-color: rgba(0, 121, 107, 0.05);
+    border-right: rgba(0, 121, 107, 0.1) solid 3px;
+}
+
+nav .undoRedo button img {
+    height: 80%;
+    padding: 5% 0;
+}
+
+nav button {
+    padding: 0;
+    outline: none;
+    border-width: 0;
+    border-radius: 4px;
+    color: white;
+    background-color: #00796b;
+    width: 80px;
+    height: 40px;
+    font-size: 1.1rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    transition: background-color .3s;3s */
+}
+
+nav button[disabled] {
+    background-color: grey;
+}
+
+nav button[disabled]:hover {
+    background-color: grey;
+}
+
+nav button:hover {
+    background-color: #00564c;
+}
+
+nav button + button{
+    margin-left: 10px;
+}
+
+nav button[name="editButton"] {
+    margin-right: 10px;
+}
+
+nav .shapeButtons button:hover {
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+
+nav .shapeButtons button:active {
+    cursor: -webkit-grabbing; /*doesn't work?!*/
+    cursor: grabbing;
+}
+
+nav .shapeButtons svg * {
+    pointer-events: none;
+}

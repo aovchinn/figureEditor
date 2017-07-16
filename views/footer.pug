@@ -1,0 +1,5 @@
+footer
+  .links
+    each item in list
+      li: a(href='/#' + item.title.toLowerCase().replace(/ /g,'-')) #{item.title}
+  include copyright.html

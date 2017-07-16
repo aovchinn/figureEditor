@@ -3,7 +3,7 @@ if (typeof define !== "function") {
 }
 
 define(function() {
-    return [
+    const db = [
         {
             title: "My diagram 1",
             components: [
@@ -97,4 +97,5 @@ define(function() {
             ]
         }
     ];
+    return db;
 });
